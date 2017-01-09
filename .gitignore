@@ -1,10 +1,14 @@
 # haskell
-.stack-work
 .cabal-sandbox
-dist
+.hsenv
+.stack-work
+cabal-project.local
 cabal.sandbox.config
+dist
+dist-newstyle
 stack.yaml
 
 # emacs
 TAGS
 tags
+codex.tags
