@@ -1,5 +1,12 @@
 # Freer: Extensible Effects with Freer Monads
 
+| freer      | 0.2.4.1                           |
+| ---------- | --------------------------------- |
+| Maintainer | Allele Dev (allele.dev@gmail.com) |
+| Funding    | $0 USD                            |
+| Copyright  | Copyright (C) 2017 Allele Dev     |
+| License    | BSD3                              |
+
 Freer is an implementation of
 ["Freer Monads, More Extensible Effects"](http://okmij.org/ftp/Haskell/extensible/more.pdf). Much
 of the implementation is a repackaging and cleaning up of the
@@ -87,6 +94,8 @@ feedback - they all help.
 Be sure to review the included code of conduct. This project adheres
 to the [Contributor's Covenant](http://contributor-covenant.org/). By
 participating in this project you agree to abide by its terms.
+
+This project is not currently actively maintained.
 
 ## Developer Setup
 
