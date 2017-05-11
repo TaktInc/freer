@@ -16,7 +16,7 @@ import Control.Monad.Freer.Coroutine
 import Control.Monad.Freer.State
 
 runTestCoroutine :: [Int] -> Int
-runTestCoroutine list = snd $ run $ runState effTestCoroutine 0
+runTestCoroutine list = snd $ run $ runState 0 effTestCoroutine
   where
     testCoroutine :: (Members '[Yield () Int, State Int] r) => Eff r ()
     testCoroutine = do

@@ -23,7 +23,7 @@ import Tests.Common
                             -- Examples --
 --------------------------------------------------------------------------------
 testReader :: Int -> Int -> Int
-testReader n x = run . flip runReader n $ ask `add` pure x
+testReader n x = run . runReader n $ ask `add` pure x
 
 {-
 t1rr' = run t1
@@ -32,7 +32,7 @@ t1rr' = run t1
 -}
 
 testMultiReader :: Float -> Int -> Float
-testMultiReader f n = run . flip runReader f . flip runReader n $ t2
+testMultiReader f n = run . runReader f . runReader n $ t2
   where t2 = do
           v1 <- ask
           v2 <- ask
@@ -46,11 +46,11 @@ t2rrr1' = run $ runReader (runReader t2 (20::Float)) (10::Float)
 -}
 
 testLocal :: Int -> Int -> Int
-testLocal env inc = run $ runReader t3 env
+testLocal env inc = run $ runReader env t3
   where t3 = t1 `add` local (+ inc) t1
         t1 = ask `add` return (1 :: Int)
 
 
 testEffmapReader :: Int -> Int -> String
-testEffmapReader n x = run . flip runReader n . contraeffmap show $ (++) <$> ask <*> pure (show x)
+testEffmapReader n x = run . runReader n . contraeffmap show $ (++) <$> ask <*> pure (show x)
 
