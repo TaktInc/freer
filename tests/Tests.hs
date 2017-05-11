@@ -1,4 +1,5 @@
 {-# LANGUAGE CPP #-}
+
 module Main where
 
 #if __GLASGOW_HASKELL__ <= 708
@@ -13,11 +14,9 @@ import Test.Tasty.QuickCheck
 
 import Tests.Coroutine
 import Tests.Exception
-import Tests.Fresh
 import Tests.NonDetEff
 import Tests.Reader
 import Tests.State
-import Tests.StateRW
 
 import qualified Data.List
 
@@ -72,15 +71,6 @@ exceptionTests = testGroup "Exception Eff tests"
   ]
 
 --------------------------------------------------------------------------------
-                       -- Fresh Effect Tests --
---------------------------------------------------------------------------------
-freshTests :: TestTree
-freshTests = testGroup "Fresh tests"
-  [ testCase "Start at 0, refresh twice, yields 1" (testFresh 10 @?= 9)
-  , testProperty "Freshening n times yields (n-1)" (\n -> n > 0 ==> testFresh n == (n-1))
-  ]
-
---------------------------------------------------------------------------------
                  -- Nondeterministic Effect Tests --
 --------------------------------------------------------------------------------
 -- https://wiki.haskell.org/Prime_numbers
@@ -119,12 +109,6 @@ stateTests = testGroup "State tests"
     \p1 p2 start -> testPutGetPutGetPlus p1 p2 start == (p1+p2, p2)
   , testProperty "If only getting, start state determines outcome" $
     \start -> testGetStart start == (start,start)
-  , testProperty "testPutGet: State == StateRW" $
-    \n -> testPutGet n 0 == testPutGetRW n 0
-  , testProperty "testPutGetPutGetPlus: State == StateRW" $
-    \p1 p2 start -> testPutGetPutGetPlus p1 p2 start == testPutGetPutGetPlusRW p1 p2 start
-  , testProperty "testGetStart: State == StateRW" $
-    \n -> testGetStart n == testGetStartRW n
   ]
 
 --------------------------------------------------------------------------------
@@ -135,7 +119,6 @@ main = defaultMain $ testGroup "Tests"
   [ pureTests
   , coroutineTests
   , exceptionTests
-  , freshTests
   , nonDetEffTests
   , readerTests
   , stateTests

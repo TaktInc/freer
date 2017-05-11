@@ -37,14 +37,10 @@ source-repository head
 library
   exposed-modules:     Control.Monad.Freer
                      , Control.Monad.Freer.Coroutine
-                     , Control.Monad.Freer.Cut
                      , Control.Monad.Freer.Exception
-                     , Control.Monad.Freer.Fresh
                      , Control.Monad.Freer.Internal
                      , Control.Monad.Freer.Reader
                      , Control.Monad.Freer.State
-                     , Control.Monad.Freer.StateRW
-                     , Control.Monad.Freer.Trace
                      , Control.Monad.Freer.Writer
                      , Data.FTCQueue
                      , Data.Open.Union
@@ -59,11 +55,8 @@ executable freer-examples
   main-is:             Main.hs
   other-modules:       Common
                      , Coroutine
-                     , Cut
-                     , Fresh
                      , NonDetEff
                      , Teletype
-                     , Trace
   build-depends:       base
                      , freer
   hs-source-dirs:      examples/src
@@ -78,11 +71,10 @@ test-suite test
   other-modules:       Tests.Common
                      , Tests.Coroutine
                      , Tests.Exception
-                     , Tests.Fresh
+                     , Tests.Loop
                      , Tests.NonDetEff
                      , Tests.Reader
                      , Tests.State
-                     , Tests.StateRW
   build-depends:    base
                   , freer
                   , tasty
