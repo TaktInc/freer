@@ -1,8 +1,9 @@
-{-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE GADTs #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DataKinds           #-}
+{-# LANGUAGE FlexibleContexts    #-}
+{-# LANGUAGE GADTs               #-}
+{-# LANGUAGE LambdaCase          #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeOperators       #-}
 
 {-|
 Module      : Control.Monad.Freer.Reader
@@ -36,10 +37,16 @@ module Control.Monad.Freer.Reader (
 ) where
 
 import Control.Monad.Freer.Internal
+import Control.Monad.Freer.Functor (ContraEff (contraeffmap), transformEff)
+
 
 -- |
 data Reader e v where
   Reader :: Reader e e
+
+instance ContraEff Reader where
+  contraeffmap f = transformEff $ \arr -> \case
+    Reader -> send Reader >>= arr . f
 
 -- | Request a value for the environment
 ask :: (Member (Reader e) r) => Eff r e

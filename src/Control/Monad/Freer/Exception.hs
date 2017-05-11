@@ -1,6 +1,7 @@
-{-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DataKinds        #-}
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE LambdaCase       #-}
+{-# LANGUAGE TypeOperators    #-}
 
 {-|
 Module      : Control.Monad.Freer.Exception
@@ -26,12 +27,18 @@ module Control.Monad.Freer.Exception (
 ) where
 
 import Control.Monad.Freer.Internal
+import Control.Monad.Freer.Functor (CoEff (effmap), transformEff)
+
 
 --------------------------------------------------------------------------------
                            -- Exceptions --
 --------------------------------------------------------------------------------
 -- | Exceptions of the type e; no resumption
 newtype Exc e v = Exc e
+
+instance CoEff Exc where
+  effmap f = transformEff $ \arr -> \case
+    Exc e -> send (Exc $ f e) >>= arr
 
 -- | Throws an error carrying information of type e
 throwError :: (Member (Exc e) r) => e -> Eff r a

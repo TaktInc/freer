@@ -1,8 +1,9 @@
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE DataKinds           #-}
+{-# LANGUAGE FlexibleContexts    #-}
+{-# LANGUAGE GADTs               #-}
+{-# LANGUAGE LambdaCase          #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE GADTs #-}
-{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE TypeOperators       #-}
 
 {-|
 Module      : Control.Monad.Freer.State
@@ -30,6 +31,7 @@ module Control.Monad.Freer.State (
 ) where
 
 import Control.Monad.Freer.Internal
+import Control.Monad.Freer.Functor (InvEff (inveffmap), transformEff)
 import Data.Proxy
 
 --------------------------------------------------------------------------------
@@ -40,6 +42,12 @@ import Data.Proxy
 data State s v where
   Get :: State s s
   Put :: !s -> State s ()
+
+instance InvEff State where
+  inveffmap f g = transformEff $ \arr -> \case
+    Get   -> send Get         >>= arr . g
+    Put s -> send (Put $ f s) >>= arr
+
 
 -- | Retrieve state
 get :: Member (State s) r => Eff r s

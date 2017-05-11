@@ -4,7 +4,8 @@
 module Tests.Reader (
   testReader,
   testMultiReader,
-  testLocal
+  testLocal,
+  testEffmapReader
 ) where
 
 #if __GLASGOW_HASKELL__ <= 708
@@ -12,7 +13,9 @@ import Control.Applicative
 #endif
 
 import Control.Monad.Freer
+import Control.Monad.Freer.Functor (contraeffmap)
 import Control.Monad.Freer.Reader
+
 
 import Tests.Common
 
@@ -46,3 +49,8 @@ testLocal :: Int -> Int -> Int
 testLocal env inc = run $ runReader t3 env
   where t3 = t1 `add` local (+ inc) t1
         t1 = ask `add` return (1 :: Int)
+
+
+testEffmapReader :: Int -> Int -> String
+testEffmapReader n x = run . flip runReader n . contraeffmap show $ (++) <$> ask <*> pure (show x)
+

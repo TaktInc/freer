@@ -1,7 +1,8 @@
-{-# LANGUAGE DataKinds         #-}
-{-# LANGUAGE DeriveFunctor     #-}
-{-# LANGUAGE FlexibleContexts  #-}
-{-# LANGUAGE TypeOperators     #-}
+{-# LANGUAGE DataKinds        #-}
+{-# LANGUAGE DeriveFunctor    #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE LambdaCase       #-}
+{-# LANGUAGE TypeOperators    #-}
 
 -- |
 -- Module:       Control.Monad.Freer.Coroutine
@@ -25,6 +26,7 @@ module Control.Monad.Freer.Coroutine
   where
 
 import Control.Monad.Freer.Internal (Arr, Eff, Member, handleRelay, send, interpose)
+import Control.Monad.Freer.Functor (ContraEff (contraeffmap), transformEff)
 
 
 -- | A type representing a yielding of control.
@@ -41,6 +43,10 @@ import Control.Monad.Freer.Internal (Arr, Eff, Member, handleRelay, send, interp
 --   The output of the continuation.
 data Yield a b c = Yield a (b -> c)
   deriving (Functor)
+
+instance ContraEff (Yield a) where
+  contraeffmap f = transformEff $ \arr -> \case
+    Yield a b -> send (Yield a $ b . f) >>= arr
 
 -- | Lifts a value and a function into the Coroutine effect.
 yield :: Member (Yield a b) effs => a -> (b -> c) -> Eff effs c

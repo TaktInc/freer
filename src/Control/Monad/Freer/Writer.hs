@@ -1,8 +1,10 @@
-{-# LANGUAGE GADTs #-}
-{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE CPP              #-}
+{-# LANGUAGE DataKinds        #-}
 {-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE GADTs            #-}
+{-# LANGUAGE LambdaCase       #-}
+{-# LANGUAGE TypeOperators    #-}
+
 {-|
 Module      : Control.Monad.Freer.Writer
 Description : Composable Writer effects -
@@ -29,10 +31,15 @@ import Data.Monoid
 #endif
 
 import Control.Monad.Freer.Internal
+import Control.Monad.Freer.Functor (CoEff (effmap), transformEff)
 
 -- | Writer effects - send outputs to an effect environment
 data Writer o x where
   Writer :: o -> Writer o ()
+
+instance CoEff Writer where
+  effmap f = transformEff $ \arr -> \case
+    Writer w -> send (Writer $ f w) >>= arr
 
 -- | Send a change to the attached environment
 tell :: Member (Writer o) r => o -> Eff r ()

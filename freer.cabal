@@ -38,6 +38,7 @@ library
   exposed-modules:     Control.Monad.Freer
                      , Control.Monad.Freer.Coroutine
                      , Control.Monad.Freer.Exception
+                     , Control.Monad.Freer.Functor
                      , Control.Monad.Freer.Internal
                      , Control.Monad.Freer.Reader
                      , Control.Monad.Freer.State

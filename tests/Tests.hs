@@ -101,6 +101,8 @@ readerTests = testGroup "Reader tests"
     (\f n -> testMultiReader f n == ((f + 2.0) + fromIntegral (n + 1)))
   , testProperty "Local injects into env"
     (\env inc -> testLocal env inc == 2*(env+1) + inc)
+  , testProperty "We can effmap Readers: n + x"
+      $ \n x -> testEffmapReader n x == show n ++ show x
   ]
 
 --------------------------------------------------------------------------------
@@ -113,6 +115,8 @@ stateTests = testGroup "State tests"
     \p1 p2 start -> testPutGetPutGetPlus p1 p2 start == (p1+p2, p2)
   , testProperty "If only getting, start state determines outcome" $
     \start -> testGetStart start == (start,start)
+  , testProperty "testInveffmap: inveffmap works over state"
+      $ \n -> testInveffmap n == (show (fst n) ++ snd n)
   ]
 
 --------------------------------------------------------------------------------
