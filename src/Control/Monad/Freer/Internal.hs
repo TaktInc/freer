@@ -46,11 +46,15 @@ module Control.Monad.Freer.Internal (
   tsingleton,
   extract,
 
+  raise,
+
   qApp,
   qComp,
   send,
   run,
   runM,
+  replaceRelay,
+  replaceRelayS,
   handleRelay,
   handleRelayS,
   interpose,
@@ -144,6 +148,45 @@ runM (E u q) = case extract u of
 -- constructed. Therefore, run is a total function if its argument
 -- terminates.
 
+
+-- | Like 'replaceRelay', but with support for an explicit state to help
+-- implement the interpreter.
+replaceRelayS :: s
+             -> (s -> a -> Eff (v ': r) w)
+             -> (forall x. s
+                        -> t x
+                        -> (s -> Arr (v ': r) x w)
+                        -> Eff (v ': r) w)
+             -> Eff (t ': r) a
+             -> Eff (v ': r) w
+replaceRelayS s' pure' bind = loop s'
+ where
+  loop s (Val x)  = pure' s x
+  loop s (E u' q)  = case decomp u' of
+    Right x -> bind s x k
+    Left  u -> E (weaken u) (tsingleton (k s))
+   where k s'' x = loop s'' $ qApp q x
+
+-- | Interpret an effect by transforming it into another effect on top of the
+-- stack. The primary use case of this function is allow interpreters to be
+-- defined in terms of other ones without leaking intermediary implementation
+-- details through the type signature.
+replaceRelay :: (a -> Eff (v ': r) w)
+             -> (forall x. t x
+                        -> Arr (v ': r) x w
+                        -> Eff (v ': r) w)
+             -> Eff (t ': r) a
+             -> Eff (v ': r) w
+replaceRelay pure' bind = loop
+ where
+  loop (Val x)  = pure' x
+  loop (E u' q)  = case decomp u' of
+    Right x -> bind x k
+    Left  u -> E (weaken u) (tsingleton k)
+   where k = qComp q loop
+
+
+
 -- | Given a request, either handle it or relay it.
 handleRelay :: (a -> Eff r w) ->
                (forall v. t v -> Arr r v w -> Eff r w) ->
@@ -183,6 +226,14 @@ interpose ret h = loop
      Just x -> h x k
      _      -> E u (tsingleton k)
     where k = qComp q loop
+
+-- | Embeds a less-constrained 'Eff' into a more-constrained one. Analogous to
+-- MTL's 'lift'.
+raise :: Eff effs a -> Eff (e ': effs) a
+raise = loop
+  where
+    loop (Val x) = pure x
+    loop (E u q) = E (weaken u) . tsingleton $ qComp q loop
 
 --------------------------------------------------------------------------------
                     -- Nondeterministic Choice --
