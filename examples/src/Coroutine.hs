@@ -14,7 +14,7 @@ th1 = yieldInt 1 >> yieldInt 2
 
 c1 = runTrace (loop =<< runC th1)
  where loop (Y x k) = trace (show (x::Int)) >> k () >>= loop
-       loop Done    = trace "Done"
+       loop (Done ())    = trace "Done"
 {-
 1
 2
@@ -34,7 +34,7 @@ th2 = ask >>= yieldInt >> (ask >>= yieldInt)
 -- Code is essentially the same as in transf.hs; no liftIO though
 c2 = runTrace $ runReader (loop =<< runC th2) (10::Int)
  where loop (Y x k) = trace (show (x::Int)) >> k () >>= loop
-       loop Done    = trace "Done"
+       loop (Done ())    = trace "Done"
 {-
 10
 10
@@ -44,7 +44,7 @@ Done
 -- locally changing the dynamic environment for the suspension
 c21 = runTrace $ runReader (loop =<< runC th2) (10::Int)
  where loop (Y x k) = trace (show (x::Int)) >> local (+(1::Int)) (k ()) >>= loop
-       loop Done    = trace "Done"
+       loop (Done ())    = trace "Done"
 {-
 10
 11
@@ -58,7 +58,7 @@ th3 = ay >> ay >> local (+(10::Int)) (ay >> ay)
 
 c3 = runTrace $ runReader (loop =<< runC th3) (10::Int)
  where loop (Y x k) = trace (show (x::Int)) >> k () >>= loop
-       loop Done    = trace "Done"
+       loop (Done ())    = trace "Done"
 {-
 10
 10
@@ -70,7 +70,7 @@ Done
 -- locally changing the dynamic environment for the suspension
 c31 = runTrace $ runReader (loop =<< runC th3) (10::Int)
  where loop (Y x k) = trace (show (x::Int)) >> local (+(1::Int)) (k ()) >>= loop
-       loop Done    = trace "Done"
+       loop (Done ())    = trace "Done"
 {-
 10
 11
@@ -86,7 +86,7 @@ Done
 -- is abstract. We abstract it out of th4
 c4 = runTrace $ runReader (loop =<< runC (th4 client)) (10::Int)
  where loop (Y x k) = trace (show (x::Int)) >> local (+(1::Int)) (k ()) >>= loop
-       loop Done    = trace "Done"
+       loop (Done ())    = trace "Done"
 
        -- cl, client, ay are monomorphic bindings
        th4 cl = cl >> local (+(10::Int)) cl
@@ -104,7 +104,7 @@ Done
 -- Even more dynamic example
 c5 = runTrace $ runReader (loop =<< runC (th client)) (10::Int)
  where loop (Y x k) = trace (show (x::Int)) >> local (\y->x+1) (k ()) >>= loop
-       loop Done    = trace "Done"
+       loop (Done ())    = trace "Done"
 
        -- cl, client, ay are monomorphic bindings
        client = ay >> ay >> ay
@@ -137,7 +137,7 @@ c7 = runTrace $
       runReader (runReader (loop =<< runC (th client)) (10::Int)) (1000::Double)
  where loop (Y x k) = trace (show (x::Int)) >>
                       local (\y->fromIntegral (x+1)::Double) (k ()) >>= loop
-       loop Done    = trace "Done"
+       loop (Done ())    = trace "Done"
 
        -- cl, client, ay are monomorphic bindings
        client = ay >> ay >> ay
@@ -177,7 +177,7 @@ c7' = runTrace $
       runReader (runReader (loop =<< runC (th client)) (10::Int)) (1000::Double)
  where loop (Y x k) = trace (show (x::Int)) >>
                       local (\y->fromIntegral (x+1)::Double) (k ()) >>= loop
-       loop Done    = trace "Done"
+       loop (Done ())    = trace "Done"
 
        -- cl, client, ay are monomorphic bindings
        client = ay >> ay >> ay

@@ -30,6 +30,6 @@ runTestCoroutine list = snd $ run $ runState effTestCoroutine 0
       status <- runC testCoroutine
       handleStatus list status
         where
-          handleStatus _ Done = return ()
+          handleStatus _ (Done ()) = return ()
           handleStatus (i:is) (Continue () k) = k i >>= handleStatus is
           handleStatus [] _ = return ()
