@@ -1,4 +1,5 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP       #-}
+{-# LANGUAGE DataKinds #-}
 
 module Main where
 
@@ -6,7 +7,10 @@ module Main where
 import Control.Applicative
 #endif
 
+import Control.Concurrent (forkIO, killThread, threadDelay)
+import Control.Monad (forever)
 import Control.Monad.Freer
+import Data.IORef
 
 import Test.Tasty
 import Test.Tasty.HUnit
@@ -112,14 +116,35 @@ stateTests = testGroup "State tests"
   ]
 
 --------------------------------------------------------------------------------
+                           -- Loop Check --
+--------------------------------------------------------------------------------
+loop :: IORef Int -> Eff '[IO] ()
+loop ref = forever $ send $ modifyIORef' ref succ
+
+testLoop :: IO Int
+testLoop = do
+  ref <- newIORef 0
+  tid <- forkIO $ runM $ loop ref
+  threadDelay $ 10^(6 :: Int) * 2
+  killThread tid
+  readIORef ref
+
+loopTests :: Int -> TestTree
+loopTests n =
+  testGroup "Loop tests" [ testProperty "any number of loops" (\() -> n > 0)]
+
+--------------------------------------------------------------------------------
                              -- Runner --
 --------------------------------------------------------------------------------
 main :: IO ()
-main = defaultMain $ testGroup "Tests"
-  [ pureTests
-  , coroutineTests
-  , exceptionTests
-  , nonDetEffTests
-  , readerTests
-  , stateTests
-  ]
+main = do
+  n <- testLoop
+  defaultMain $ testGroup "Tests"
+    [ pureTests
+    , coroutineTests
+    , exceptionTests
+    , loopTests n
+    , nonDetEffTests
+    , readerTests
+    , stateTests
+    ]

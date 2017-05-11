@@ -108,7 +108,6 @@ instance Applicative (Eff r) where
   pure = Val
   Val f <*> Val x = Val $ f x
   Val f <*> E u q = E u (q |> (Val . f))
-  E u q <*> Val x = E u (q |> (Val . ($ x)))
   E u q <*> m     = E u (q |> (`fmap` m))
 
 instance Monad (Eff r) where
