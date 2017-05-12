@@ -21,6 +21,9 @@ module Eff (
   runNat,
   handleRelay,
   handleRelayS,
+  replaceRelay,
+  replaceRelayS,
+  raise,
   send,
   Arr,
 
