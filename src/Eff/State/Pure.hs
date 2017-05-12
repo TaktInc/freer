@@ -21,6 +21,12 @@ runState s (E u q) = case decomp u of
   Right (Put s') -> runState s' (qApp q ())
   Left  u'       -> E u' (tsingleton (\x -> runState s (qApp q x)))
 
+evalState :: s -> Eff (State s ': r) w -> Eff r w
+evalState = (fmap fst .) . runState
+
+execState :: s -> Eff (State s ': r) w -> Eff r s
+execState = (fmap snd .) . runState
+
 -- |
 -- An encapsulated State handler, for transactional semantics
 -- The global state is updated only if the transactionState finished
