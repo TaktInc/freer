@@ -35,16 +35,16 @@ source-repository head
     location: git clone https://gitlab.com/queertypes/freer.git
 
 library
-  exposed-modules:     Control.Monad.Freer
-                     , Control.Monad.Freer.Coroutine
-                     , Control.Monad.Freer.Exception
-                     , Control.Monad.Freer.Functor
-                     , Control.Monad.Freer.Internal
-                     , Control.Monad.Freer.Reader
-                     , Control.Monad.Freer.Region
-                     , Control.Monad.Freer.SafeIO
-                     , Control.Monad.Freer.State
-                     , Control.Monad.Freer.Writer
+  exposed-modules:     Eff
+                     , Eff.Coroutine
+                     , Eff.Exception
+                     , Eff.Functor
+                     , Eff.Internal
+                     , Eff.Reader
+                     , Eff.Region
+                     , Eff.SafeIO
+                     , Eff.State
+                     , Eff.Writer
                      , Data.FTCQueue
                      , Data.Open.Union
                      , Data.Open.Union.Internal

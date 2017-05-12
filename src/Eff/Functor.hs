@@ -2,10 +2,10 @@
 {-# LANGUAGE RankNTypes    #-}
 {-# LANGUAGE TypeOperators #-}
 
-module Control.Monad.Freer.Functor where
+module Eff.Functor where
 
 import Control.Applicative (pure)
-import Control.Monad.Freer.Internal (Eff, replaceRelay)
+import Eff.Internal (Eff, replaceRelay)
 
 
 -- | A class witnessing that 'eff' forms a covariant functor in its second type

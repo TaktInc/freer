@@ -2,7 +2,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 module Main where
 
-import Control.Monad.Freer
+import Eff
 import Teletype
 
 runner :: (Member Teletype r) => Eff r ()

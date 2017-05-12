@@ -8,9 +8,9 @@ module Tests.State (
   testInveffmap
 ) where
 
-import Control.Monad.Freer
-import Control.Monad.Freer.State
-import Control.Monad.Freer.Functor (inveffmap)
+import Eff
+import Eff.State
+import Eff.Functor (inveffmap)
 import Data.Tuple (swap)
 
 testPutGet :: Int -> Int -> (Int,Int)

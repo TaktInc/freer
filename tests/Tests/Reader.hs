@@ -12,9 +12,9 @@ module Tests.Reader (
 import Control.Applicative
 #endif
 
-import Control.Monad.Freer
-import Control.Monad.Freer.Functor (contraeffmap)
-import Control.Monad.Freer.Reader
+import Eff
+import Eff.Functor (contraeffmap)
+import Eff.Reader
 
 
 import Tests.Common

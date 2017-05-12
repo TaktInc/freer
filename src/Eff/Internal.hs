@@ -12,7 +12,7 @@
 {-# LANGUAGE UndecidableInstances #-}
 
 {-|
-Module      : Control.Monad.Freer.Internal
+Module      : Eff.Internal
 Description : Mechanisms to make effects work
 Copyright   : Allele Dev 2016
 License     : BSD-3
@@ -30,7 +30,7 @@ Using <http://okmij.org/ftp/Haskell/extensible/Eff1.hs> as a
 starting point.
 
 -}
-module Control.Monad.Freer.Internal (
+module Eff.Internal (
   Eff(..),
   Member(..),
   Members,
@@ -141,7 +141,7 @@ run _       = error "Internal:run - This (E) should never happen"
 -- This is useful for plugging in traditional transformer stacks.
 --
 -- Note that if the monad is 'IO', you should consider using
--- 'Control.Monad.Freer.SafeIO.runSafeIO' instead, as it provides the ability
+-- 'Eff.SafeIO.runSafeIO' instead, as it provides the ability
 -- to catch and recover from IO exceptions in 'Eff' code.
 runM :: Monad m => Eff '[m] w -> m w
 runM (Val x) = return x

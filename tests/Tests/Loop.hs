@@ -10,7 +10,7 @@ module Tests.Loop
 
 import           Control.Concurrent  (forkIO, killThread, threadDelay)
 import           Control.Monad       (forever)
-import           Control.Monad.Freer
+import           Eff
 import           Data.Function       (fix)
 
 

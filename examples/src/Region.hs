@@ -14,10 +14,10 @@
 module Region where
 
 import           Control.Exception
-import           Control.Monad.Freer
-import           Control.Monad.Freer.Region
-import           Control.Monad.Freer.SafeIO
-import           Control.Monad.Freer.Exception (Exc (..))
+import           Eff
+import           Eff.Region
+import           Eff.SafeIO
+import           Eff.Exception (Exc (..))
 
 data Crazy = Crazy deriving Eq
 

@@ -5,7 +5,7 @@
 {-# LANGUAGE TypeOperators    #-}
 
 -- |
--- Module:       Control.Monad.Freer.Coroutine
+-- Module:       Eff.Coroutine
 -- Description:  Composable coroutine effects layer.
 -- Copyright:    (c) 2016 Allele Dev
 -- License:      BSD3
@@ -16,7 +16,7 @@
 -- An effect to compose functions with the ability to yield.
 --
 -- Using <http://okmij.org/ftp/Haskell/extensible/Eff1.hs> as a starting point.
-module Control.Monad.Freer.Coroutine
+module Eff.Coroutine
     ( Yield(..)
     , yield
     , Status(..)
@@ -25,8 +25,8 @@ module Control.Monad.Freer.Coroutine
     )
   where
 
-import Control.Monad.Freer.Internal (Arr, Eff, Member, handleRelay, send, interpose)
-import Control.Monad.Freer.Functor (ContraEff (contraeffmap), transformEff)
+import Eff.Internal (Arr, Eff, Member, handleRelay, send, interpose)
+import Eff.Functor (ContraEff (contraeffmap), transformEff)
 
 
 -- | A type representing a yielding of control.

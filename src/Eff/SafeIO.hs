@@ -3,15 +3,15 @@
 {-# LANGUAGE GADTs               #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module Control.Monad.Freer.SafeIO
+module Eff.SafeIO
   ( SIO ()
   , runSafeIO
   , safeIO
   ) where
 
-import Control.Monad.Freer (send, Member)
-import Control.Monad.Freer.Internal (qApp, prj, Eff (E, Val))
-import Control.Monad.Freer.Exception (Exc (Exc), throwError)
+import Eff (send, Member)
+import Eff.Internal (qApp, prj, Eff (E, Val))
+import Eff.Exception (Exc (Exc), throwError)
 import Control.Exception (throw, SomeException, try)
 
 ------------------------------------------------------------------------------

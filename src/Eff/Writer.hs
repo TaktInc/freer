@@ -6,7 +6,7 @@
 {-# LANGUAGE TypeOperators    #-}
 
 {-|
-Module      : Control.Monad.Freer.Writer
+Module      : Eff.Writer
 Description : Composable Writer effects -
 Copyright   : Allele Dev 2016
 License     : BSD-3
@@ -20,7 +20,7 @@ Using <http://okmij.org/ftp/Haskell/extensible/Eff1.hs> as a
 starting point.
 
 -}
-module Control.Monad.Freer.Writer (
+module Eff.Writer (
   Writer(..),
   tell,
   runWriter
@@ -30,8 +30,8 @@ module Control.Monad.Freer.Writer (
 import Data.Monoid
 #endif
 
-import Control.Monad.Freer.Internal
-import Control.Monad.Freer.Functor (CoEff (effmap), transformEff)
+import Eff.Internal
+import Eff.Functor (CoEff (effmap), transformEff)
 
 -- | Writer effects - send outputs to an effect environment
 data Writer o x where

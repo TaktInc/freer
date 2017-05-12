@@ -6,7 +6,7 @@
 {-# LANGUAGE TypeOperators       #-}
 
 {-|
-Module      : Control.Monad.Freer.State
+Module      : Eff.State
 Description : State effects, for state-carrying computations.
 Copyright   : Allele Dev 2016
 License     : BSD-3
@@ -20,7 +20,7 @@ Using <http://okmij.org/ftp/Haskell/extensible/Eff1.hs> as a
 starting point.
 
 -}
-module Control.Monad.Freer.State (
+module Eff.State (
   State,
   get,
   put,
@@ -30,8 +30,8 @@ module Control.Monad.Freer.State (
   transactionState
 ) where
 
-import Control.Monad.Freer.Internal
-import Control.Monad.Freer.Functor (InvEff (inveffmap), transformEff)
+import Eff.Internal
+import Eff.Functor (InvEff (inveffmap), transformEff)
 import Data.Proxy
 
 --------------------------------------------------------------------------------

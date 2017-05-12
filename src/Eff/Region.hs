@@ -13,7 +13,7 @@
 {-# LANGUAGE UndecidableInstances               #-}
 {-# OPTIONS_GHC -fno-warn-redundant-constraints #-}
 
-module Control.Monad.Freer.Region
+module Eff.Region
   ( SafeForRegion
   , Resource ()
   , Region
@@ -33,9 +33,9 @@ module Control.Monad.Freer.Region
   ) where
 
 import Control.Exception (SomeException)
-import Control.Monad.Freer (Member, send)
-import Control.Monad.Freer.Internal (Union, Eff (..), qComp, tsingleton, decomp, prj)
-import Control.Monad.Freer.Exception (Exc (..), throwError)
+import Eff (Member, send)
+import Eff.Internal (Union, Eff (..), qComp, tsingleton, decomp, prj)
+import Eff.Exception (Exc (..), throwError)
 import Data.Bool (bool)
 import Data.List (delete)
 import Data.Proxy (Proxy (..))

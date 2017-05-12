@@ -16,11 +16,11 @@ import qualified Control.Monad.Except as MTL
 #endif
 
 import Control.Monad
-import Control.Monad.Freer
-import Control.Monad.Freer.Internal
-import Control.Monad.Freer.Exception
-import Control.Monad.Freer.State
-import Control.Monad.Freer.StateRW
+import Eff
+import Eff.Internal
+import Eff.Exception
+import Eff.State
+import Eff.StateRW
 
 import Criterion
 import Criterion.Main

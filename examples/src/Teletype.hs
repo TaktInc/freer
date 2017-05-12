@@ -10,7 +10,7 @@ import Control.Applicative (pure)
 #endif
 import System.Exit hiding (ExitSuccess)
 
-import Control.Monad.Freer
+import Eff
 
 --------------------------------------------------------------------------------
                           -- Effect Model --

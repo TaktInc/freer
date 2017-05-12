@@ -1,6 +1,6 @@
 module Coroutine where
 
--- import Control.Monad.Freer.Coroutine
+-- import Eff.Coroutine
 
 {-
 

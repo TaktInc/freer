@@ -4,7 +4,7 @@
 {-# LANGUAGE TypeOperators    #-}
 
 {-|
-Module      : Control.Monad.Freer.Exception
+Module      : Eff.Exception
 Description : An Exception effect and handler.
 Copyright   : Allele Dev 2016
 License     : BSD-3
@@ -19,15 +19,15 @@ Using <http://okmij.org/ftp/Haskell/extensible/Eff1.hs> as a
 starting point.
 
 -}
-module Control.Monad.Freer.Exception (
+module Eff.Exception (
   Exc(..),
   throwError,
   runError,
   catchError
 ) where
 
-import Control.Monad.Freer.Internal
-import Control.Monad.Freer.Functor (CoEff (effmap), transformEff)
+import Eff.Internal
+import Eff.Functor (CoEff (effmap), transformEff)
 
 
 --------------------------------------------------------------------------------

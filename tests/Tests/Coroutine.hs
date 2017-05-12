@@ -11,9 +11,9 @@ import Control.Applicative
 #endif
 
 import Control.Monad
-import Control.Monad.Freer
-import Control.Monad.Freer.Coroutine
-import Control.Monad.Freer.State
+import Eff
+import Eff.Coroutine
+import Eff.State
 
 runTestCoroutine :: [Int] -> Int
 runTestCoroutine list = snd $ run $ runState 0 effTestCoroutine

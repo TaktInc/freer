@@ -3,7 +3,7 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE CPP #-}
 {-|
-Module      : Control.Monad.Freer
+Module      : Eff
 Description : Freer - an extensible effects library
 Copyright   : Allele Dev 2016
 License     : BSD-3
@@ -12,7 +12,7 @@ Stability   : experimental
 Portability : POSIX
 
 -}
-module Control.Monad.Freer (
+module Eff (
   Member,
   Members,
   Eff,
@@ -33,7 +33,7 @@ module Control.Monad.Freer (
 import Control.Applicative (pure)
 #endif
 
-import Control.Monad.Freer.Internal
+import Eff.Internal
 
 runNat
   :: forall m r e w.
