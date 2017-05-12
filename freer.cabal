@@ -41,6 +41,7 @@ library
                      , Control.Monad.Freer.Functor
                      , Control.Monad.Freer.Internal
                      , Control.Monad.Freer.Reader
+                     , Control.Monad.Freer.Region
                      , Control.Monad.Freer.SafeIO
                      , Control.Monad.Freer.State
                      , Control.Monad.Freer.Writer
@@ -57,7 +58,9 @@ executable freer-examples
   main-is:             Main.hs
   other-modules:       Common
                      , Coroutine
+                     , HandleRegion
                      , NonDetEff
+                     , Region
                      , Teletype
   build-depends:       base
                      , freer
