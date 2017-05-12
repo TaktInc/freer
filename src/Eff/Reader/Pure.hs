@@ -1,6 +1,7 @@
-{-# LANGUAGE DataKinds     #-}
-{-# LANGUAGE GADTs         #-}
-{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE DataKinds           #-}
+{-# LANGUAGE GADTs               #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeOperators       #-}
 
 module Eff.Reader.Pure
   ( module Eff.Reader
@@ -23,10 +24,10 @@ runReader e = handleRelay return $ \Reader k -> k e
 runReaderM :: forall s r a m
             . (Member m r)
            => m s
-           -> Eff (Provider s ': r) a
+           -> Eff (Reader s ': r) a
            -> Eff r a
 runReaderM mval = runNat nat
   where
-    nat :: forall x. Provider s x -> m x
-    nat Fetch = mval
+    nat :: forall x. Reader s x -> m x
+    nat Reader = mval
 
