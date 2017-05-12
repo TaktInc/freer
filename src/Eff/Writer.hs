@@ -20,10 +20,9 @@ Using <http://okmij.org/ftp/Haskell/extensible/Eff1.hs> as a
 starting point.
 
 -}
-module Eff.Writer (
-  Writer(..),
-  tell,
-  runWriter
+module Eff.Writer
+  ( Writer(..)
+  , tell
 ) where
 
 #if __GLASGOW_HASKELL__ <= 708
@@ -44,8 +43,3 @@ instance CoEff Writer where
 -- | Send a change to the attached environment
 tell :: Member (Writer o) r => o -> Eff r ()
 tell o = send $ Writer o
-
--- | Simple handler for Writer effects
-runWriter :: Monoid o => Eff (Writer o ': r) a -> Eff r (a,o)
-runWriter = handleRelay (\x -> return (x,mempty))
-                  (\ (Writer o) k -> k () >>= \ (x,l) -> return (x,o `mappend` l))

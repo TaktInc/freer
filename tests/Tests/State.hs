@@ -9,7 +9,7 @@ module Tests.State (
 ) where
 
 import Eff
-import Eff.State
+import Eff.State.Pure
 import Eff.Functor (inveffmap)
 import Data.Tuple (swap)
 

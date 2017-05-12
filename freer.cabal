@@ -36,14 +36,19 @@ source-repository head
 library
   exposed-modules:     Eff
                      , Eff.Coroutine
-                     , Eff.Exception
+                     , Eff.Coroutine.Pure
+                     , Eff.Exc
+                     , Eff.Exc.Pure
                      , Eff.Functor
                      , Eff.Internal
                      , Eff.Reader
+                     , Eff.Reader.Pure
                      , Eff.Region
                      , Eff.SafeIO
                      , Eff.State
+                     , Eff.State.Pure
                      , Eff.Writer
+                     , Eff.Writer.Pure
                      , Data.FTCQueue
                      , Data.Open.Union
                      , Data.Open.Union.Internal
@@ -74,7 +79,7 @@ test-suite test
   main-is:          Tests.hs
   other-modules:       Tests.Common
                      , Tests.Coroutine
-                     , Tests.Exception
+                     , Tests.Exc
                      , Tests.Loop
                      , Tests.NonDetEff
                      , Tests.Reader

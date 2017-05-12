@@ -17,7 +17,7 @@ import Test.Tasty.HUnit
 import Test.Tasty.QuickCheck
 
 import Tests.Coroutine
-import Tests.Exception
+import Tests.Exc
 import Tests.NonDetEff
 import Tests.Reader
 import Tests.State

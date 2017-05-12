@@ -35,7 +35,7 @@ module Eff.Region
 import Control.Exception (SomeException)
 import Eff (Member, send)
 import Eff.Internal (Union, Eff (..), qComp, tsingleton, decomp, prj)
-import Eff.Exception (Exc (..), throwError)
+import Eff.Exc (Exc (..), throwError)
 import Data.Bool (bool)
 import Data.List (delete)
 import Data.Proxy (Proxy (..))

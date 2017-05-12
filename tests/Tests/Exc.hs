@@ -3,7 +3,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE ConstraintKinds #-}
 
-module Tests.Exception (
+module Tests.Exc (
   TooBig(..),
 
   testExceptionTakesPriority,
@@ -19,9 +19,9 @@ module Tests.Exception (
 ) where
 
 import Eff
-import Eff.Exception
-import Eff.Reader
-import Eff.State
+import Eff.Exc.Pure
+import Eff.Reader.Pure
+import Eff.State.Pure
 
 import Tests.Common
 

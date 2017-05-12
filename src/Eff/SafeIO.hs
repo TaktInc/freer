@@ -9,9 +9,8 @@ module Eff.SafeIO
   , safeIO
   ) where
 
-import Eff (send, Member)
-import Eff.Internal (qApp, prj, Eff (E, Val))
-import Eff.Exception (Exc (Exc), throwError)
+import Eff.Internal
+import Eff.Exc
 import Control.Exception (throw, SomeException, try)
 
 ------------------------------------------------------------------------------

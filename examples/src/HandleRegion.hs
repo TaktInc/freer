@@ -14,7 +14,7 @@ module HandleResource where
 
 import           Control.Exception (SomeException)
 import           Eff (Member, Eff ())
-import           Eff.Exception (Exc (..))
+import           Eff.Exc (Exc (..))
 import           Eff.SafeIO (SIO, safeIO)
 import           Eff.Region (handleRegionRelay, catchSafeIOExcs, Ancestor, ResourceCtor, SafeForRegion, Resource, RegionEff, Region, unsafeWithResource, acquire)
 import           System.IO (Handle)

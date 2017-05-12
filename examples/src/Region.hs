@@ -17,7 +17,7 @@ import           Control.Exception
 import           Eff
 import           Eff.Region
 import           Eff.SafeIO
-import           Eff.Exception (Exc (..))
+import           Eff.Exc (Exc (..))
 
 data Crazy = Crazy deriving Eq
 

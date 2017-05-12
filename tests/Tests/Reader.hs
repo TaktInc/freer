@@ -14,7 +14,7 @@ import Control.Applicative
 
 import Eff
 import Eff.Functor (contraeffmap)
-import Eff.Reader
+import Eff.Reader.Pure
 
 
 import Tests.Common
