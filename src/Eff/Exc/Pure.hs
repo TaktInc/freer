@@ -21,7 +21,13 @@ runError =
 
 -- | A catcher for Exceptions. Handlers are allowed to rethrow
 -- exceptions.
-catchError :: Member (Exc e) r =>
-        Eff r a -> (e -> Eff r a) -> Eff r a
+catchError :: Member (Exc e) r
+           => Eff r a
+           -> (e -> Eff r a)
+           -> Eff r a
 catchError m handle = interpose return (\(Exc e) _k -> handle e) m
 
+onFail :: (e -> Eff r a) -> Eff (Exc e ': r) a -> Eff r a
+onFail handler prg = do
+  res <- runError prg
+  either handler pure res
