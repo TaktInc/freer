@@ -1,8 +1,12 @@
 {-# LANGUAGE DataKinds           #-}
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE GADTs               #-}
+{-# LANGUAGE InstanceSigs        #-}
 {-# LANGUAGE LambdaCase          #-}
+{-# LANGUAGE PolyKinds           #-}
+{-# LANGUAGE RankNTypes          #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeApplications    #-}
 {-# LANGUAGE TypeOperators       #-}
 
 {-|
@@ -29,7 +33,8 @@ module Eff.Reader
   ) where
 
 import Eff.Internal
-import Eff.Functor (ContraEff (contraeffmap), transformEff)
+import Eff.Functor
+import Data.Proxy
 
 
 -- |
@@ -37,15 +42,20 @@ data Reader e v where
   Reader :: Reader e e
 
 instance ContraEff Reader where
-  contraeffmap f = transformEff $ \arr -> \case
-    Reader -> send Reader >>= arr . f
+  contraeffmap :: forall a b r r' x. Sub (Reader a) (Reader b) r r'
+               => Proxy Reader
+               -> (b -> a)
+               -> Eff r x
+               -> Eff r' x
+  contraeffmap _ f = transformEff (Proxy @b) $ \(arr :: v -> Eff r' x) -> \case
+    (Reader :: Reader a v) -> send Reader >>= arr . f
 
 -- | Request a value for the environment
 ask :: (Member (Reader e) r) => Eff r e
 ask = send Reader
 
 -- | Request a value from the environment and applys as function
-asks :: (b -> a) -> Eff '[Reader b] a
+asks :: (Member (Reader b) r) => (b -> a) -> Eff r a
 asks f = ask >>= return . f
 
 -- |
