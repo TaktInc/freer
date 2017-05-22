@@ -47,13 +47,14 @@ library
                      , Eff.SafeIO
                      , Eff.State
                      , Eff.State.Pure
+                     , Eff.TH
                      , Eff.Writer
                      , Eff.Writer.Pure
                      , Data.FTCQueue
                      , Data.Open.Union
                      , Data.Open.Union.Internal
 
-  build-depends:       base >=4.7 && <5
+  build-depends:       base >=4.7 && <5, template-haskell >= 2.11 && < 3
   hs-source-dirs:      src
   ghc-options:         -Wall
   default-language:    Haskell2010
