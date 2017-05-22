@@ -45,7 +45,7 @@ ask :: (Member (Reader e) r) => Eff r e
 ask = send Reader
 
 -- | Request a value from the environment and applys as function
-asks :: (b -> a) -> Eff '[Reader b] a
+asks :: (Member (Reader e) r) => (e -> b) -> Eff r b
 asks f = ask >>= return . f
 
 -- |

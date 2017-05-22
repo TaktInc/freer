@@ -155,14 +155,17 @@ runM (E u q) = case extract u of
 
 -- | Like 'replaceRelay', but with support for an explicit state to help
 -- implement the interpreter.
-replaceRelayS :: s
-             -> (s -> a -> Eff (v ': r) w)
-             -> (forall x. s
-                        -> t x
-                        -> (s -> Arr (v ': r) x w)
-                        -> Eff (v ': r) w)
-             -> Eff (t ': r) a
-             -> Eff (v ': r) w
+replaceRelayS
+    :: forall t v r s a w
+     . s
+    -> (s -> a -> Eff (v ': r) w)
+    -> (forall x. s
+               -> t x
+               -> (s -> Arr (v ': r) x w)
+               -> Eff (v ': r) w
+       )
+    -> Eff (t ': r) a
+    -> Eff (v ': r) w
 replaceRelayS s' pure' bind = loop s'
  where
   loop s (Val x)  = pure' s x
@@ -175,12 +178,15 @@ replaceRelayS s' pure' bind = loop s'
 -- stack. The primary use case of this function is allow interpreters to be
 -- defined in terms of other ones without leaking intermediary implementation
 -- details through the type signature.
-replaceRelay :: (a -> Eff (v ': r) w)
-             -> (forall x. t x
-                        -> Arr (v ': r) x w
-                        -> Eff (v ': r) w)
-             -> Eff (t ': r) a
-             -> Eff (v ': r) w
+replaceRelay
+    :: forall t v r a w
+     .  (a -> Eff (v ': r) w)
+    -> (forall x. t x
+               -> Arr (v ': r) x w
+               -> Eff (v ': r) w
+       )
+    -> Eff (t ': r) a
+    -> Eff (v ': r) w
 replaceRelay pure' bind = loop
  where
   loop (Val x)  = pure' x
@@ -192,9 +198,11 @@ replaceRelay pure' bind = loop
 
 
 -- | Given a request, either handle it or relay it.
-handleRelay :: (a -> Eff r w) ->
-               (forall v. t v -> Arr r v w -> Eff r w) ->
-               Eff (t ': r) a -> Eff r w
+handleRelay
+    :: forall t r a w
+     . (a -> Eff r w)
+    -> (forall v. t v -> Arr r v w -> Eff r w)
+    -> Eff (t ': r) a -> Eff r w
 handleRelay ret h = loop
  where
   loop (Val x)  = ret x
@@ -206,10 +214,13 @@ handleRelay ret h = loop
 -- | Parameterized 'handleRelay'
 -- Allows sending along some state to be handled for the target
 -- effect, or relayed to a handler that can handle the target effect.
-handleRelayS :: s ->
-                (s -> a -> Eff r w) ->
-                (forall v. s -> t v -> (s -> Arr r v w) -> Eff r w) ->
-                Eff (t ': r) a -> Eff r w
+handleRelayS
+    :: forall t r s a w
+     . s
+    -> (s -> a -> Eff r w)
+    -> (forall v. s -> t v -> (s -> Arr r v w) -> Eff r w)
+    -> Eff (t ': r) a
+    -> Eff r w
 handleRelayS s' ret h = loop s'
   where
     loop s (Val x)  = ret s x
