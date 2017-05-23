@@ -105,8 +105,9 @@ genSig (GadtC [cName] tArgs' ctrType) = do
       AppT eff tRet    = ctrType
       otherVars        = unapply ctrType
       quantifiedVars   = fmap PlainTV . nub
-                                      $ effs : mapMaybe freeVarName
-                                                        (tArgs ++ otherVars)
+                                      $ mapMaybe freeVarName
+                                                 (tArgs ++ otherVars)
+                                          ++ [effs]
       memberConstraint = ConT ''Member `AppT` eff       `AppT` VarT effs
       resultType       = ConT ''Eff    `AppT` VarT effs `AppT` tRet
 
