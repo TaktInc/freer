@@ -59,7 +59,7 @@ genFreer makeSigs tcName = do
 
   reify tcName >>= \case
     TyConI (DataD _ _ _ _ cons _) -> do
-      sigs <- filter (const makeSigs) <$> mapM genSig cons
+      sigs <- filter (const makeSigs) <$> mapM (genSig tcName) cons
       decs <- mapM genDecl cons
       return $ sigs ++ decs
 
@@ -81,6 +81,7 @@ getDeclName = mkName . overFirst toLower . nameBase
 -- | Builds a function definition of the form @x a b c = send $ X a b c@.
 genDecl :: Con -> Q Dec
 genDecl (ForallC _ _ con) = genDecl con
+genDecl (NormalC cName tArgs') = genDecl $ GadtC [cName] tArgs' undefined
 genDecl (GadtC [cName] tArgs _) = do
   let fnName = getDeclName cName
   let arity = length tArgs - 1
@@ -96,9 +97,13 @@ genDecl _ = fail "genDecl expects a GADT constructor"
 ------------------------------------------------------------------------------
 -- | Generates a type signature of the form
 -- @x :: Member (Effect e) effs => a -> b -> c -> Eff effs r@.
-genSig :: Con -> Q Dec
-genSig (ForallC _ _ con) = genSig con
-genSig (GadtC [cName] tArgs' ctrType) = do
+genSig :: Name -> Con -> Q Dec
+genSig eff (ForallC _ _ con) = genSig eff con
+genSig eff (NormalC cName tArgs') = do
+  var <- newName "a"
+  genSig eff . GadtC [cName] tArgs' $ AppT (ConT eff) (VarT var)
+
+genSig _ (GadtC [cName] tArgs' ctrType) = do
   effs <- newName "effs"
   let fnName           = getDeclName cName
       tArgs            = fmap snd tArgs'
@@ -115,7 +120,7 @@ genSig (GadtC [cName] tArgs' ctrType) = do
          . ForallT quantifiedVars [memberConstraint]
          . foldArrows
          $ tArgs ++ [resultType]
-genSig _ = fail "genSig expects a GADT constructor"
+genSig _ _ = fail "genSig expects a GADT constructor"
 
 
 ------------------------------------------------------------------------------
