@@ -37,6 +37,7 @@ library
   exposed-modules:     Eff
                      , Eff.Coroutine
                      , Eff.Coroutine.Pure
+                     , Eff.Embedded
                      , Eff.Exc
                      , Eff.Exc.Pure
                      , Eff.Functor
@@ -54,7 +55,9 @@ library
                      , Data.Open.Union
                      , Data.Open.Union.Internal
 
-  build-depends:       base >=4.7 && <5, template-haskell >= 2.11 && < 3
+  build-depends:       base >=4.7 && <5
+                     , template-haskell >= 2.11 && < 3
+                     , async
   hs-source-dirs:      src
   ghc-options:         -Wall
   default-language:    Haskell2010
