@@ -155,22 +155,28 @@ handleRegionRelay :: forall res effs a
                    . ( SafeForRegion res effs
                      , Eq res
                      )
-                  => -- | Strategy to acquire a 'res'.
+                  =>
                      (ResourceCtor res -> Eff effs res)
-                     -- | Strategy to release a 'res'.
+                     -- ^ Strategy to acquire a 'res'.
                   -> (res -> Eff effs ())
-                     -- | Strategy for catching other effects.
+                     -- ^ Strategy to release a 'res'.
                   -> (forall (b :: *)
-                         . -- | Action to release all resources.
+                         .
                            Eff effs ()
-                           -- | Action to ignore this effect.
                         -> (Union effs b -> Eff effs a)
-                           -- | The effect being caught.
                         -> Union effs b
                         -> Eff effs a
                      )
-                     -- | A region in which we can allocate 'res's.
+                     -- ^ Strategy for catching other effects:
+                     --
+                     -- @
+                     --     (Action to release all resources)
+                     --     -> (Action to ignore this effect)
+                     --     -> (The effect being caught)
+                     --     -> (The wrapped effect)
+                     -- @
                   -> Region res effs a
+                  -- ^ A region in which we can allocate 'res's.
                   -> Eff effs a
 handleRegionRelay acquireM releaseM catchM = loop []
   where
