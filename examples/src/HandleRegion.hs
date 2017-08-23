@@ -10,7 +10,7 @@
 {-# OPTIONS_GHC -fno-warn-orphans               #-}
 {-# OPTIONS_GHC -fno-warn-redundant-constraints #-}
 
-module HandleResource where
+module HandleRegion where
 
 import           Control.Exception (SomeException)
 import           Eff (Member, Eff ())
