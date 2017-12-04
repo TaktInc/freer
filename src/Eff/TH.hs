@@ -106,12 +106,13 @@ genSig eff (NormalC cName tArgs') = do
 genSig _ (GadtC [cName] tArgs' ctrType) = do
   effs <- newName "effs"
   let fnName           = getDeclName cName
+      desugar          = concatMap unapply $ fmap snd tArgs'
       tArgs            = fmap snd tArgs'
       AppT eff tRet    = ctrType
       otherVars        = unapply ctrType
       quantifiedVars   = fmap PlainTV . nub
                                       $ mapMaybe freeVarName
-                                                 (tArgs ++ otherVars)
+                                                 (desugar ++ otherVars)
                                           ++ [effs]
       memberConstraint = ConT ''Member `AppT` eff       `AppT` VarT effs
       resultType       = ConT ''Eff    `AppT` VarT effs `AppT` tRet
