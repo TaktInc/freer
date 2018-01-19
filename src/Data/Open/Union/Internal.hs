@@ -58,7 +58,7 @@ import Unsafe.Coerce (unsafeCoerce)
 
 
 -- | Open union is a strong sum (existential with an evidence).
-data Union (r :: [ * -> * ]) a where
+data Union (r :: [ * -> * ]) (a :: *) where
     Union :: {-# UNPACK #-} !Word -> t a -> Union r a
 
 -- | Takes a request of type @t :: * -> *@, and injects it into the 'Union'.
