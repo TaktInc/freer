@@ -98,7 +98,7 @@ readerTests = testGroup "Reader tests"
   [ testProperty "Reader passes along environment: n + x"
     (\n x -> testReader n x == n + x)
   , testProperty "Multiple readers work"
-    (\f n -> testMultiReader f n == ((f + 2.0) + fromIntegral (n + 1)))
+    (\f n -> testMultiReader f n == ((realToFrac f + 2.0) + fromIntegral (n + 1)))
   , testProperty "Local injects into env"
     (\env inc -> testLocal env inc == 2*(env+1) + inc)
   , testProperty "We can effmap Readers: n + x"

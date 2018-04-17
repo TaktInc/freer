@@ -1,6 +1,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE CPP #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 module Tests.Reader (
   testReader,
   testMultiReader,
@@ -31,12 +32,12 @@ t1rr' = run t1
       arising from a use of `t1'
 -}
 
-testMultiReader :: Float -> Int -> Float
+testMultiReader :: Float -> Int -> Double
 testMultiReader f n = run . runReader f . runReader n $ t2
   where t2 = do
           v1 <- ask
-          v2 <- ask
-          return $ fromIntegral (v1 + (1::Int)) + (v2 + (2::Float))
+          v2 :: Float <- ask
+          return $ fromIntegral (v1 + (1::Int)) + (realToFrac v2 + (2::Double))
 
 -- The opposite order of layers
 {- If we mess up, we get an error
